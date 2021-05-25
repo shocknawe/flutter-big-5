@@ -16,12 +16,28 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends State<MyApp> {
-  int _questionIndex = 0;
+class _QuestionKey {
+  String question;
+  List<String> answerList;
 
-  static const questions = [
-    'What\'s your favorite color?',
-    'What\'s your favorite animal?'
+  _QuestionKey({this.question, this.answerList});
+}
+
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
+  var questions = [
+    _QuestionKey(
+      question: 'What\'s your favorite color?',
+      answerList: ['Black', 'Red', 'Green', 'White'],
+    ),
+    _QuestionKey(
+      question: 'What\'s your favorite animal?',
+      answerList: ['Rabbit', 'Snake', 'Elephant', 'Lion'],
+    ),
+    _QuestionKey(
+      question: 'Who\'s your favorite instructor?',
+      answerList: ['Max', 'Max', 'Max', 'Max'],
+    ),
   ];
 
   void _answerQuestion() {
@@ -42,20 +58,14 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           children: [
             Question(
-              questions[_questionIndex],
+              questions[_questionIndex].question
             ),
-            Answer(
-              'Answer1',
-              onPressed: _answerQuestion,
-            ),
-            Answer(
-              'Answer2',
-              onPressed: _answerQuestion,
-            ),
-            Answer(
-              'Answer3',
-              onPressed: _answerQuestion,
-            ),
+            ...questions[_questionIndex].answerList.map((answer) {
+              return Answer(
+                answer,
+                onPressed: _answerQuestion,
+              );
+            }).toList()
           ],
         ),
       ),
