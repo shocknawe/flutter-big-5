@@ -9,19 +9,17 @@ class Question extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: 80,
       margin: EdgeInsets.only(
         top: 30,
         bottom: 10,
       ),
-      child: Container(
-        height: 80,
-        child: Text(
-          questionText,
-          style: TextStyle(
-            fontSize: 28,
-          ),
-          textAlign: TextAlign.center,
+      child: Text(
+        questionText,
+        style: TextStyle(
+          fontSize: 28,
         ),
+        textAlign: TextAlign.center,
       ),
     );
   }
