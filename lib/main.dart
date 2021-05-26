@@ -1,11 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'question.dart';
-import 'answer.dart';
-
-// void main () {
-//   runApp(MyApp());
-// }
+import './quiz.dart';
+import './result.dart';
+import './quiz-data.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,35 +12,26 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _QuestionKey {
-  String question;
-  List<String> answerList;
-
-  _QuestionKey({this.question, this.answerList});
-}
-
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
-  var questions = [
-    _QuestionKey(
-      question: 'What\'s your favorite color?',
-      answerList: ['Black', 'Red', 'Green', 'White'],
-    ),
-    _QuestionKey(
-      question: 'What\'s your favorite animal?',
-      answerList: ['Rabbit', 'Snake', 'Elephant', 'Lion'],
-    ),
-    _QuestionKey(
-      question: 'Who\'s your favorite instructor?',
-      answerList: ['Max', 'Max', 'Max', 'Max'],
-    ),
-  ];
+  var _isFinished = false;
+  var _scoreList = List.filled(5, 0);
 
-  void _answerQuestion() {
+  void _answerQuestion({Personality personality, int value}) {
     setState(() {
-      print('answered question');
-      _questionIndex = min(questions.length - 1, _questionIndex + 1);
-      print('_questionIndex: ' + _questionIndex.toString());
+      _scoreList[personality.index] += value;
+      _questionIndex = _questionIndex + 1;
+      if (_questionIndex == QUIZ_DATA.length) {
+        _isFinished = true;
+      }
+    });
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      _scoreList = List.filled(5, 0);
+      _questionIndex = 0;
+      _isFinished = false;
     });
   }
 
@@ -53,21 +40,17 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('My First App'),
+          title: Text('Big Five - Personality Test'),
         ),
-        body: Column(
-          children: [
-            Question(
-              questions[_questionIndex].question
-            ),
-            ...questions[_questionIndex].answerList.map((answer) {
-              return Answer(
-                answer,
+        body: !_isFinished
+            ? Quiz(
+                questionData: QUIZ_DATA[_questionIndex],
                 onPressed: _answerQuestion,
-              );
-            }).toList()
-          ],
-        ),
+              )
+            : Result(
+                scoreList: _scoreList,
+                onPressed: _resetQuiz,
+              ),
       ),
     );
   }

@@ -13,12 +13,15 @@ class Question extends StatelessWidget {
         top: 30,
         bottom: 10,
       ),
-      child: Text(
-        questionText,
-        style: TextStyle(
-          fontSize: 28,
+      child: Container(
+        height: 80,
+        child: Text(
+          questionText,
+          style: TextStyle(
+            fontSize: 28,
+          ),
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
       ),
     );
   }
